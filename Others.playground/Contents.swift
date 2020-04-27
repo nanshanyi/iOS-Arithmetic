@@ -103,3 +103,75 @@ func judgeMn(m: Int, n: Int) -> Int{
     return numberCount(n: m^n)
 }
 
+
+//题目：实现函数 double Power（double base, int exponent），求 base 的exponent次方。不得使用库函数，同时不需要考虑大数问题。
+enum FailError: Error {
+    case base0
+
+}
+
+//一般解法
+
+func power(base: Double, exponent: Int) throws -> Double{
+    if base == 0.0 && exponent < 0 {
+        throw FailError.base0
+    }
+    
+    var temp = 1.0
+    let absExp = abs(exponent)
+    if exponent == 0 {
+        return base == 0 ? 0 : 1
+    }
+    
+    for _ in 1...absExp {
+        temp *= base
+    }
+    
+    if exponent > 0 {
+        return temp
+    } else {
+        return 1.0/temp
+    }
+
+}
+let acccc = 9>>1
+//高端解法(只针对UInt 次方)
+func power2(base: Double, exponent: UInt) -> Double {
+    if exponent == 0 {
+        return 1
+    }
+    if exponent == 1 {
+        return base
+    }
+    var result = power2(base: base, exponent: exponent >> 1)
+    result *= result
+    if exponent & 1 == 1 {
+        result *= base
+    }
+    return result
+}
+
+let ccccc:UInt = 0
+let g1 = try? power(base: 0, exponent: 0)
+let g2 = try? power(base: 10, exponent: 0)
+let g3 = try? power(base: -2, exponent: 0)
+let g4 = try? power(base: 10, exponent: 2)
+let g5 = try? power(base: -2, exponent: 2)
+let g6 = try? power(base: 3, exponent: -1)
+let g7 = try? power(base: -2, exponent: -2)
+//let g8 = power2(base: 10, exponent: 2)
+let g9 = power2(base: -2, exponent: 10)
+
+//题目：输入数字n，按顺序打印出从1最大的n位十进制数。比如输入3，则打印出1、2、3一直到最大的3位数即999。
+//分析n 太大会溢出，考虑使用字符串实现
+
+func printToMaxN(n: Int) {
+    var array = [0]
+    var index = 0
+    var wei = 1
+    if array.count > 1 {
+        
+    }
+
+    
+}
