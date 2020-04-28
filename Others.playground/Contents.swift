@@ -159,19 +159,80 @@ let g4 = try? power(base: 10, exponent: 2)
 let g5 = try? power(base: -2, exponent: 2)
 let g6 = try? power(base: 3, exponent: -1)
 let g7 = try? power(base: -2, exponent: -2)
-//let g8 = power2(base: 10, exponent: 2)
+let g8 = power2(base: 10, exponent: 2)
 let g9 = power2(base: -2, exponent: 10)
 
 //题目：输入数字n，按顺序打印出从1最大的n位十进制数。比如输入3，则打印出1、2、3一直到最大的3位数即999。
 //分析n 太大会溢出，考虑使用字符串实现
 
 func printToMaxN(n: Int) {
-    var array = [0]
-    var index = 0
-    var wei = 1
-    if array.count > 1 {
-        
+    guard n > 0 else {
+        return
     }
-
+    var array = [0]
+    
+    while !increment(arry: &array, n: n) {
+        printNumber(array)
+    }
     
 }
+
+func increment( arry: inout [Int], n: Int) -> Bool{
+    var isOver = false
+    for i in 0...(n - 1) {
+        var nSum = arry[i]
+        nSum += 1
+        if nSum >= 10 {
+            if i == n - 1 {
+                isOver = true
+            } else {
+                arry[i] = 0
+                if i == arry.count - 1 {
+                    arry.append(0)
+                }
+            }
+        } else {
+            arry[i] += 1
+            break
+        }
+    }
+    return isOver
+}
+
+func printNumber(_ array: [Int], rev:Bool = true) {
+    var string = ""
+    if rev {
+        string = array.reversed().reduce("") { String($0) + String($1) }
+    } else {
+        string = array.reduce("") { String($0) + String($1) }
+    }
+     
+    print(string)
+}
+
+//printToMaxN(n: 4)
+
+// 递归实现
+func printToMaxNNumber(n: Int) {
+    guard n > 0 else {
+        return
+    }
+    var array = (0...(n-1)).map{_ in 0}
+    for i in 0..<10 {
+        array[0] = i
+        recurrencePrint(&array, n: n, index: 0)
+    }
+}
+
+func recurrencePrint(_ array: inout [Int], n: Int, index: Int) {
+    if index == n - 1 {
+        printNumber(array, rev: false)
+        return
+    }
+    for i in 0..<10 {
+        array[index + 1] = i
+        recurrencePrint(&array, n: n, index: index + 1)
+    }
+}
+
+printToMaxNNumber(n: 2)
