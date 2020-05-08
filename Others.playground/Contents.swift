@@ -236,3 +236,30 @@ func recurrencePrint(_ array: inout [Int], n: Int, index: Int) {
 }
 
 printToMaxNNumber(n: 2)
+//题目：输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+
+var array1 = [1,2,3,4,5,6,7,8,9]
+
+extension Array {
+    mutating func reorder(_ transform: (Element) -> Bool) {
+        var i = 0
+        var j = count - 1
+        while i < j {
+            
+            while i < j && transform(self[i]) {
+                i += 1
+            }
+            
+            while i < j && !transform(self[j]) {
+                j -= 1
+            }
+            self.swapAt(i, j)
+        }
+    }
+}
+array1.reorder{ $0 & 1 == 0 }
+print(array1)
+array1.reorder{ $0 > 5 }
+print(array1)
+
+

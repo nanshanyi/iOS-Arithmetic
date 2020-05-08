@@ -98,3 +98,51 @@ forceTraverseTree(tree2)
 print("\n")
 print("\n")
 middleTraverseTree(tree2)
+
+//题目：输入两棵二叉树A和B，判断B是不是A的子结构。
+
+func hasSubTree(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool {
+    var result = false
+    if pRoot1 != nil && pRoot2 != nil {
+        if pRoot1!.value == pRoot2!.value {
+            treeHasTree2(pRoot1, pRoot2)
+        }
+        if !result {
+            result = hasSubTree(pRoot1!.left, pRoot2)
+        }
+        if !result {
+            result = hasSubTree(pRoot1?.left, pRoot2)
+        }
+    }
+    return result
+}
+
+func treeHasTree2(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool {
+    if pRoot2 == nil {
+        return true
+    }
+    if pRoot1 == nil {
+        return false
+    }
+    if pRoot1?.value != pRoot2?.value {
+        return false
+    }
+    return treeHasTree2(pRoot1?.left, pRoot2?.left) && treeHasTree2(pRoot1?.right, pRoot2?.right)
+}
+
+//题目：请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+func mirrorTree(tree: BinaryTreeNode){
+    if tree.left == nil && tree.right == nil {
+        return
+    }
+    let node = tree.left
+    tree.left = tree.right
+    tree.right = node
+    if tree.left != nil {
+        mirrorTree(tree: tree.left!)
+    }
+    if tree.right != nil {
+        mirrorTree(tree: tree.right!)
+    }
+    
+}
