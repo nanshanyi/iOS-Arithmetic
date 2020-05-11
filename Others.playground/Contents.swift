@@ -262,4 +262,55 @@ print(array1)
 array1.reorder{ $0 > 5 }
 print(array1)
 
+//题目: 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。例如：如果输入如下矩阵：
+/*
+ 1  2  3  4  5
+ 6  7  8  9  10
+ 11 12 13 14 15
+ 16 17 18 19 20
+ 21 22 23 24 25
+ */
 
+func printClockCircle(_ array:[[Int]], rows: Int, columns: Int) {
+    guard rows > 0 && columns > 0 else {
+        return
+    }
+    var start = 0
+    while rows > start * 2 && columns > start * 2 {
+        printCircle(array, rows: rows, columns: columns, start: start)
+        start += 1
+    }
+}
+
+func printCircle(_ array: [[Int]], rows: Int, columns: Int, start: Int) {
+    let endX = columns - 1 - start
+    let endY = rows - 1 - start
+    for i in start...endX {
+        print("\(array[start][i])")
+    }
+    
+    if start < endY {
+        for i in (start + 1)...endY {
+            print("\(array[i][endX])")
+        }
+    }
+    
+    if start < endX && start < endY {
+        for i in (start...endX - 1).reversed() {
+            print("\(array[endY][i])")
+        }
+    }
+    
+    if start < endX && start < endY - 1 {
+        for i in (start + 1...endY - 1).reversed() {
+            print("\(array[i][start])")
+        }
+    }
+    
+}
+
+let array = [[1, 2, 3, 4, 5],
+             [6, 7, 8, 9, 10],
+             [11,12,13,14,15],
+             [16,17,18,19,20]]
+printClockCircle(array, rows: 4, columns: 5)
