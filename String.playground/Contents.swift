@@ -43,3 +43,22 @@ func invertedString(_ string: String) -> String{
 let result = invertedString(reString)
 print(result)
 
+//题目： 判断回文
+
+func judgeString(_ string: String) -> Bool{
+    guard string.count > 1 else {
+        return true
+    }
+    var f = string.startIndex
+    var l = string.index(before: string.endIndex)
+    while f < l {
+        if string[f] != string[l] {
+            return false
+        }
+        f = string.index(after: f)
+        l = string.index(before: l)
+    }
+    return true
+}
+
+var hhui = judgeString("12345321")

@@ -131,7 +131,7 @@ func treeHasTree2(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool 
 }
 
 //题目：请完成一个函数，输入一个二叉树，该函数输出它的镜像。
-func mirrorTree(tree: BinaryTreeNode){
+func mirrorTree(tree: BinaryTreeNode) {
     if tree.left == nil && tree.right == nil {
         return
     }
@@ -145,4 +145,23 @@ func mirrorTree(tree: BinaryTreeNode){
         mirrorTree(tree: tree.right!)
     }
     
+}
+
+//题目：逐层打印二叉树
+
+func printTree(tree: BinaryTreeNode) {
+    var array = [tree]
+    while array.count > 0 {
+        var temp = [BinaryTreeNode]()
+        for node in array {
+            print("\(node.value ?? "")")
+            if node.left != nil {
+                temp.append(node.left!)
+            }
+            if node.right != nil {
+                temp.append(node.right!)
+            }
+        }
+        array = temp
+    }
 }
