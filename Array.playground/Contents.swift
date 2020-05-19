@@ -92,11 +92,8 @@ func find(_ array:[[Int]], rows: Int, columns: Int, number:Int) -> Bool {
     }
     var row = 0
     var column = columns - 1
-    var index = 1
     while row < rows, column >= 0 {
         let current = array[row][column]
-        print("looptimes\(index)")
-        index+=1
         if current == number {
             return true
         } else if current > number {
@@ -107,6 +104,7 @@ func find(_ array:[[Int]], rows: Int, columns: Int, number:Int) -> Bool {
     }
     return false
 }
+
 let finArray = [[1,2, 8,  9],
                 [2,4, 9, 12],
                 [4,7,10, 13],
