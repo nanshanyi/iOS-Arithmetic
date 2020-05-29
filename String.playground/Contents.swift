@@ -1,7 +1,7 @@
 
 //MARK: - String
 //题目字符串倒序
-var reString = "invertedString"
+var reString = "hello my name is lee"
 extension String {
     mutating func inverted(){
         guard count > 1 else {
@@ -16,6 +16,7 @@ extension String {
             formIndex(before: &l)
         }
     }
+    
     mutating func swapAt(_ i: Index, _ j: Index) {
         guard i != j else {
             return
@@ -25,21 +26,26 @@ extension String {
 //        self[i] = self[j]
 //        self[j] = tmp
     }
+
+    
 }
+
 
 func invertedString(_ string: String) -> String{
     guard string.count > 1 else {
         return string
     }
-    var i = string.index(before: string.endIndex)
+    var i = string.endIndex
     var result = ""
     while i > string.startIndex {
-        result.append(string[i])
         string.formIndex(before: &i)
+        result.append(string[i])
     }
     return result
 }
 
+let ssss = reString.split(separator: " ").map{invertedString(String($0))}.joined(separator: " ")
+print(ssss)
 let result = invertedString(reString)
 print(result)
 

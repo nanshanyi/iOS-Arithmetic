@@ -165,3 +165,38 @@ func printTree(tree: BinaryTreeNode) {
         array = temp
     }
 }
+//题目：输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则返回true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+func verifySquenceOfBST(sequence:[Int]) -> Bool {
+    guard !sequence.isEmpty else {
+        return false
+    }
+    let root = sequence.last!
+    var left = 0
+    if left < sequence.count - 1 {
+        //在二叉搜索树中左子树的节点总是小于根节点
+        for item in sequence {
+            if item > root {
+                break
+            }
+            left += 1
+        }
+        //在二叉搜索树中左子树的节点总是小于根节点
+        for item in left..<(sequence.count-1) {
+            if sequence[item] < root {
+                return false
+            }
+        }
+    }
+
+    var l = true
+    if left > 0 {
+        l = verifySquenceOfBST(sequence: Array(sequence[0..<left]))
+    }
+    var r = true
+    if left < sequence.count - 2 {
+        r = verifySquenceOfBST(sequence: Array(sequence[left...(sequence.count - 2)]))
+    }
+    return l && r
+}
+
+let verRe = verifySquenceOfBST(sequence: [5,7,6,9,11,10,8])

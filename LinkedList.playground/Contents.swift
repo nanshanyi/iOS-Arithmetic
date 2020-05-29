@@ -54,12 +54,15 @@ func deleteNode(_ nodeHead: inout NodeList?, node: inout NodeList?){
     guard let head = nodeHead , let delNode = node else {
         return
     }
+    //要删除的节点在中间
     if delNode.next != nil {
         delNode.value = delNode.next!.value
         delNode.next = delNode.next!.next
     } else if delNode == head {
+        //只有一个节点
         nodeHead = nil
     } else {
+        //要删除的节点是尾结
         var pNode = nodeHead
         while pNode?.next != nil && pNode?.next != delNode {
             pNode = pNode?.next
