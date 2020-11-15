@@ -139,3 +139,11 @@ array1.reorder{ $0 & 1 == 0 }
 print(array1)
 array1.reorder{ $0 > 5 }
 print(array1)
+
+func map<Element, T>(array:[Element], transform:(Element)->T) -> [T]{
+    var result = [T]()
+    for item in array {
+        result.append(transform(item))
+    }
+    return result;
+}

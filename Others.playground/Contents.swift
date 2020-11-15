@@ -1,19 +1,19 @@
+import Foundation
 //MARK: -  斐波那契数列
 //题目：写一个函数，输入n，求斐波那契（Fibonacci）数列的第n项。斐波那契数列的定义如下：
 //菜鸡解法， 调用栈指数级增加
 //     {       0        n=0
 //f(n)={       1        n=1
-//     {f(n-1) + f(n-2) n>2
+//     {f(n-1) + f(n-2) n>=2
 //
+var k = 0.4508
+var level = 3;
+var result = 500 * exp(Double(level - 2)) * k
+print("++++++\(result)")
 
 func fibonacci1(n: Int) -> Int {
-    if n <= 0 {
-        return 0
-    }
-
-    if n == 1 {
-        return 1
-    }
+    if n <= 0 { return 0 }
+    if n == 1 { return 1 }
     return fibonacci1(n: n - 1) + fibonacci1(n: n - 2)
 }
 let a = fibonacci1(n: 10)
@@ -289,3 +289,30 @@ let array = [[1, 2, 3, 4, 5],
              [11,12,13,14,15],
              [16,17,18,19,20]]
 printClockCircle(array, rows: 4, columns: 5)
+
+
+//MARK: - 动态规划
+//给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+//
+//示例:
+//
+//输入: [-2,1,-3,4,-1,2,1,-5,4]
+//输出: 6
+//解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+//使用动态规划以子序列的结束点为基准的,解法思路以子序列的结束节点为基准，先遍历出以某个节点为结束的所有子序列，
+//因为每个节点都可能会是子序列的结束节点，因此要遍历下整个序列，
+//如: 以 b 为结束点的所有子序列: [a , b] [b] 以 c 为结束点的所有子序列: [a, b, c] [b, c] [ c ]。
+//f(n) 可以有f(n-1)的到
+
+func maxSubArray(_ nums: [Int]) -> Int {
+    var sum = 0
+    var ans = nums[0]
+    for i in 0..<nums.count {
+        sum = max(sum + nums[i], nums[i])
+        ans = max(sum, ans)
+    }
+    
+    return ans
+}
+print("=============")
+print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
