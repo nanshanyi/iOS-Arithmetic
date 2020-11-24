@@ -6,10 +6,6 @@ import Foundation
 //f(n)={       1        n=1
 //     {f(n-1) + f(n-2) n>=2
 //
-var k = 0.4508
-var level = 3;
-var result = 500 * exp(Double(level - 2)) * k
-print("++++++\(result)")
 
 func fibonacci1(n: Int) -> Int {
     if n <= 0 { return 0 }
