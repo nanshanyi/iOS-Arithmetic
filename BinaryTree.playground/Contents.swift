@@ -1,16 +1,27 @@
 //MARK: - 二叉树
-class BinaryTreeNode {
-    var value: String?
-    var left: BinaryTreeNode?
-    var right: BinaryTreeNode?
+class BinaryTreeNode<T: Equatable>: Equatable {
+    var value: T?
+    var left: BinaryTreeNode<T>?
+    var right: BinaryTreeNode<T>?
     
-    init(_ value: String?) {
+    init(_ value: T?) {
         self.value = value
     }
+    
+    static func == (lhs: BinaryTreeNode<T>, rhs: BinaryTreeNode<T>) -> Bool {
+        
+        guard lhs.value == rhs.value &&
+              lhs.left == rhs.left &&
+                lhs.right == rhs.right  else {
+            return false
+        }
+        return true
+    }
+    
 }
 let treeArr = ["A", "B", "D", "G", "#", "#", "H", "#", "#", "#", "C", "E", "#", "I", "#", "#", "F"]
 var index = 0
-func createTree(_ tree: inout BinaryTreeNode?) {
+func createTree(_ tree: inout BinaryTreeNode<String>?) {
     guard index < treeArr.count else {
         return
     }
@@ -25,21 +36,39 @@ func createTree(_ tree: inout BinaryTreeNode?) {
     }
     
 }
-var tree: BinaryTreeNode? = BinaryTreeNode("0")
+var tree: BinaryTreeNode<String>? = BinaryTreeNode("0")
 
  createTree(&tree)
 //题目：遍历二叉树
 //1、前序
-func forceTraverseTree(_ tree: BinaryTreeNode?) {
+func forceTraverseTree(_ tree: BinaryTreeNode<String>?) {
     guard tree != nil else {
         return
     }
-    print("treeTraverse" + (tree?.value ?? ""))
+    print(tree?.value ?? "")
     forceTraverseTree(tree?.left)
     forceTraverseTree(tree?.right)
 }
+
+func forceTraverseTree2(_ tree: BinaryTreeNode<String>?) {
+    var array = Array<BinaryTreeNode<String>>()
+    var pNode = tree;
+    while pNode != nil || !array.isEmpty {
+        if pNode != nil {
+            print(pNode!.value ?? "")
+            array.append(pNode!)
+            pNode = pNode?.left
+        } else {
+            let last = array.popLast()
+            pNode = last?.right
+        }
+    }
+}
+forceTraverseTree(tree)
+print("\n")
+forceTraverseTree2(tree)
 //2、中序
-func middleTraverseTree(_ tree: BinaryTreeNode?) {
+func middleTraverseTree(_ tree: BinaryTreeNode<String>?) {
     guard tree != nil else {
         return
     }
@@ -47,22 +76,65 @@ func middleTraverseTree(_ tree: BinaryTreeNode?) {
     print("treeTraverse" + (tree?.value ?? ""))
     middleTraverseTree(tree?.right)
 }
+
+func middleTraverseTree2(_ tree: BinaryTreeNode<String>?) {
+    var array = Array<BinaryTreeNode<String>>()
+    var pNode = tree;
+    while pNode != nil || !array.isEmpty {
+        if pNode != nil {
+            array.append(pNode!)
+            pNode = pNode?.left
+        } else {
+            let last = array.popLast()
+            pNode = last?.right
+            print("treeTraverse" + (last!.value ?? ""))
+        }
+    }
+}
+print("\n")
+middleTraverseTree(tree)
+print("\n")
+middleTraverseTree2(tree)
+
 //3、后续
-func backTraverseTree(_ tree: BinaryTreeNode?) {
+func backTraverseTree(_ tree: BinaryTreeNode<String>?) {
     guard tree != nil else {
         return
     }
     backTraverseTree(tree?.left)
-    print("treeTraverse" + (tree?.value ?? ""))
     backTraverseTree(tree?.right)
+    print("treeTraverse" + (tree?.value ?? ""))
 }
-forceTraverseTree(tree)
-print("\n")
-middleTraverseTree(tree)
+
+func backTraverseTree2(_ tree: BinaryTreeNode<String>?) {
+    var array = Array<BinaryTreeNode<String>>()
+    var pNode = tree
+    var lastVisit = tree
+    while pNode != nil || !array.isEmpty {
+        if pNode != nil {
+            array.append(pNode!)
+            pNode = pNode?.left
+        } else {
+            let last = array.last
+            if last?.right == nil || last?.right == lastVisit {
+                print("treeTraverse" + (last?.value ?? ""))
+                array.removeLast()
+                lastVisit = last
+                pNode = nil
+            } else {
+                pNode = last?.right
+            }
+        }
+    }
+}
 print("\n")
 backTraverseTree(tree)
+print("\n")
+backTraverseTree2(tree)
+
+
 //题目：输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建出图2.6所示的二叉树并输出它的头结点。二叉树结点的定义如下：
-func constuctTree(pre: [String], mid: [String]) -> BinaryTreeNode? {
+func constuctTree(pre: [String], mid: [String]) -> BinaryTreeNode<String>? {
     let rootValue = pre.first
     let root = BinaryTreeNode(rootValue)
     if pre.first == pre.last {
@@ -101,7 +173,7 @@ middleTraverseTree(tree2)
 
 //题目：输入两棵二叉树A和B，判断B是不是A的子结构。
 
-func hasSubTree(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool {
+func hasSubTree(_ pRoot1: BinaryTreeNode<String>?, _ pRoot2: BinaryTreeNode<String>?) -> Bool {
     var result = false
     if pRoot1 != nil && pRoot2 != nil {
         if pRoot1!.value == pRoot2!.value {
@@ -117,7 +189,7 @@ func hasSubTree(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool {
     return result
 }
 
-func treeHasTree2(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool {
+func treeHasTree2(_ pRoot1: BinaryTreeNode<String>?, _ pRoot2: BinaryTreeNode<String>?) -> Bool {
     if pRoot2 == nil {
         return true
     }
@@ -131,7 +203,7 @@ func treeHasTree2(_ pRoot1: BinaryTreeNode?, _ pRoot2: BinaryTreeNode?) -> Bool 
 }
 
 //题目：请完成一个函数，输入一个二叉树，该函数输出它的镜像。
-func mirrorTree(tree: BinaryTreeNode) {
+func mirrorTree(tree: BinaryTreeNode<String>) {
     if tree.left == nil && tree.right == nil {
         return
     }
@@ -149,10 +221,10 @@ func mirrorTree(tree: BinaryTreeNode) {
 
 //题目：逐层打印二叉树
 
-func printTree(tree: BinaryTreeNode) {
+func printTree(tree: BinaryTreeNode<String>) {
     var array = [tree]
     while array.count > 0 {
-        var temp = [BinaryTreeNode]()
+        var temp = [BinaryTreeNode<String>]()
         for node in array {
             print("\(node.value ?? "")")
             if node.left != nil {

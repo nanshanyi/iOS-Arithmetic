@@ -131,7 +131,7 @@ extension Array {
             while i < j && !transform(self[j]) {
                 j -= 1
             }
-            self.swapAt(i, j)
+            swapAt(i, j)
         }
     }
 }
