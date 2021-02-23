@@ -36,10 +36,24 @@ let b = fibonacci2(n: 10)
  f（1）= 1; f（2）= 2；f（3）= 4；f（4）=7  f（n）= 2^n - 1 (此处^表示平方)
  相关题目2：我们可以用 2×1（图2.13 的左边）的小矩形横着或者竖着去覆盖更大的矩形。请问用8个2×1的小矩形无重叠地覆盖一个2×8的大矩形（图2.13的右边），总共有多少种方法？
 */
+func fibonacci3(n: Int) -> Int{
+    if n == 0 { return 0 }
+    if n == 1 { return 1 }
+    var fibL = 1
+    var fibR = 0
+    var result = 0
+    for _ in 2...n {
+        result = fibL + fibR
+        fibR = fibL
+        fibL = result
+    }
+    return result
+}
 
 //MARK: - 二进制，位运算
 //题目：请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。例如把9表示成二进制是1001，有2位是1。因此如果输入9，该函数输出2。
 //一般解法，负数会造成死循环
+
 func numberOf1(n: Int) -> Int {
     var count = 0
     var i = n
@@ -296,6 +310,25 @@ printClockCircle(array, rows: 4, columns: 5)
 //如: 以 b 为结束点的所有子序列: [a , b] [b] 以 c 为结束点的所有子序列: [a, b, c] [b, c] [ c ]。
 //f(n) 可以有f(n-1)的到
 
+func maxsub(_ array:[Int]) -> Int {
+    if array.isEmpty {
+        return 0
+    }
+    if array.count == 1 {
+        return array[0]
+    }
+    var m = 0
+    var pre = array[0]
+    for i in 1..<array.count {
+        pre += array[i]
+        m = max(pre, m)
+    }
+    let sub = maxsub(Array(array.suffix(from: 1)))
+    return max(sub, m)
+}
+print("=============")
+print(maxsub([-2,1,-3,4,-1,2,1,-5,4]))
+
 func maxSubArray(_ nums: [Int]) -> Int {
     var sum = 0
     var ans = nums[0]
@@ -308,6 +341,30 @@ func maxSubArray(_ nums: [Int]) -> Int {
 }
 print("=============")
 print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
+//给你 k 种面值的硬币，面值分别为 c1, c2 ... ck，每种硬币的数量无限，再给一个总金额 amount，问你最少需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1
+func coinChange(coins: [Int], amount: Int) -> Int {
+    var dic = Dictionary<Int, Int>()
+    func dp(n: Int) -> Int {
+        if let p = dic[n] { return p }
+        if n == 0 { return 0 }
+        if n < 0 { return -1 }
+        var res: Int? = nil
+        for coin in coins {
+            let sub = dp(n: n - coin)
+            if sub == -1 { continue }
+            if res == nil {
+                res = sub + 1
+            } else {
+                res = min(res!, sub + 1)
+            }
+        }
+        dic[n] = res != nil ? res : -1
+        return dic[n]!
+    }
+    return dp(n: amount)
+}
+print("=============")
+print(coinChange(coins: [1,2,5], amount: 11))
 
 //罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
 //
