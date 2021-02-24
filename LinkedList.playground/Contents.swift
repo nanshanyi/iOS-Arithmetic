@@ -120,22 +120,40 @@ func reversef(node: NodeList?) -> NodeList? {
     var revHead: NodeList? = nil
     var temp = node
     while temp != nil {
-        let pNext = temp?.next
+        let pNext = temp!.next
         if pNext == nil {
             revHead = temp
         }
-        temp?.next = pre
+        temp!.next = pre
         pre = temp
         temp = pNext
     }
     return revHead
 }
 
+func reverse2(node: NodeList?) -> NodeList? {
+    guard node != nil && node?.next != nil else {
+        return node
+    }
+    var pre:NodeList? = nil
+    var temp:NodeList? = node
+    var result:NodeList? = nil
+    while temp != nil {
+        result = temp
+        temp = temp?.next
+        result?.next = pre
+        pre = result
+    }
+    return result
+}
+
 var nodelist2: NodeList? = NodeList(1)
 nodelist2?.append(2).append(3).append(4).append(5).append(6)
+printNode(nodelist2)
 print("==========")
-let resu1 = reverse(node: &nodelist2)
-printNode(resu1)
+//let resu1 = reverse(node: &nodelist2)
+let resu2 = reverse2(node: nodelist2)
+printNode(resu2)
 
 //print("\n==========")
 //let resu = reversef(node: nodelist2)

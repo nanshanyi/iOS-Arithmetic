@@ -21,7 +21,7 @@ extension String {
         guard i != j else {
             return
         }
-    
+        
 //        let tmp = self[i]
 //        self[i] = self[j]
 //        self[j] = tmp
@@ -105,7 +105,7 @@ func longestCommonPrefix(_ strs: [String]) -> String {
 var array = ["flower","flow","flight"];
 print(longestCommonPrefix(array))
 
-
+//判断括号配对是否正确
 
 func isValid(_ s: String) -> Bool {
     var result = [Character]()

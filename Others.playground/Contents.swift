@@ -342,6 +342,7 @@ func maxSubArray(_ nums: [Int]) -> Int {
 print("=============")
 print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
 //给你 k 种面值的硬币，面值分别为 c1, c2 ... ck，每种硬币的数量无限，再给一个总金额 amount，问你最少需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1
+
 func coinChange(coins: [Int], amount: Int) -> Int {
     var dic = Dictionary<Int, Int>()
     func dp(n: Int) -> Int {
@@ -363,9 +364,22 @@ func coinChange(coins: [Int], amount: Int) -> Int {
     }
     return dp(n: amount)
 }
-print("=============")
-print(coinChange(coins: [1,2,5], amount: 11))
+print("=============coinChange1")
+print(coinChange(coins: [1,2,5], amount: 9))
 
+func coinChange2(coins:[Int], amount: Int) -> Int {
+    var dp = (0...amount).map{_ in amount + 1}
+    dp[0] = 0
+    for i in 0...amount {
+        for coin in coins {
+            if i - coin < 0 { continue }
+            dp[i] = min(dp[i], dp[i-coin] + 1)
+        }
+    }
+    return dp[amount] == amount + 1 ? -1 : dp[amount]
+}
+print("=============coinChange2")
+print(coinChange2(coins: [1,2,5], amount: 9))
 //罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
 //
 //字符          数值
