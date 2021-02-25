@@ -380,6 +380,16 @@ func coinChange2(coins:[Int], amount: Int) -> Int {
 }
 print("=============coinChange2")
 print(coinChange2(coins: [1,2,5], amount: 9))
+
+//输入为一个n * n的二维数组matrix，请你计算从第一行落到最后一行，经过的路径和最小为多少。
+//输入：matrix = [[2,1,3],
+//               [6,5,4],
+//               [7,8,9]]
+//输出：13
+//解释： 下面是两条和最小的下降路径：[1,5,4]  [1,4,9]
+
+
+
 //罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
 //
 //字符          数值
