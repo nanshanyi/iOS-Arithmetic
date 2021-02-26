@@ -2,7 +2,7 @@
 //MARK: - 链表
 class NodeList: Equatable {
     static func == (lhs: NodeList, rhs: NodeList) -> Bool {
-        return lhs.value == rhs.value
+        return lhs.value == rhs.value && lhs === rhs
     }
     
     var value: Int
@@ -103,11 +103,11 @@ func findKthToTail(_ nodeList: NodeList?, k:Int) -> NodeList? {
 
 //题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点
 //递归的方式
-func reverse( node: inout NodeList?) -> NodeList? {
+func reverse( node: NodeList?) -> NodeList? {
     if node == nil || node?.next == nil  {
         return node
     }
-    let newHead = reverse(node: &node!.next)
+    let newHead = reverse(node: node?.next)
     node?.next?.next = node
     node?.next = nil
     return newHead
@@ -137,15 +137,14 @@ func reverse2(node: NodeList?) -> NodeList? {
         return node
     }
     var pre:NodeList? = nil
-    var temp:NodeList? = node
-    var result:NodeList? = nil
-    while temp != nil {
-        result = temp
-        temp = temp?.next
-        result?.next = pre
-        pre = result
+    var cur:NodeList? = node
+    while cur != nil {
+        let next = cur?.next
+        cur?.next = pre
+        pre = cur
+        cur = next
     }
-    return result
+    return pre
 }
 var nodelist2: NodeList? = NodeList(1)
 nodelist2?.append(2).append(3).append(4).append(5).append(6)
@@ -259,3 +258,29 @@ nodelist4?.append(4).append(6).append(8)
 var result222 = mergeNodelist2(lhs: nodelist5, rhs: nodelist6)
 printNode(result222)
 
+/*
+ 请判断一个链表是否为回文链表。
+ 示例 1:
+ 输入: 1->2 输出: false
+ 
+ 示例 2:
+ 输入: 1->2->2->1 输出: true
+ 进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+ */
+func isPalindrome(_ head: NodeList?) -> Bool {
+    guard head != nil else { return false }
+    guard head?.next != nil else { return true }
+    var slow = head
+    var fast = head
+    while fast != nil && fast?.next != nil {
+        slow = slow?.next
+        fast = fast?.next?.next
+    }
+    if fast == nil { slow = slow?.next }
+    let left = head
+    let right = reverse(node: slow)
+    while <#condition#> {
+        <#code#>
+    }
+    
+}
