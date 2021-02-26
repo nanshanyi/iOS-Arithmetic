@@ -1,3 +1,4 @@
+
 //MARK: - 链表
 class NodeList: Equatable {
     static func == (lhs: NodeList, rhs: NodeList) -> Bool {
@@ -130,7 +131,7 @@ func reversef(node: NodeList?) -> NodeList? {
     }
     return revHead
 }
-
+//链表反转，非递归处理
 func reverse2(node: NodeList?) -> NodeList? {
     guard node != nil && node?.next != nil else {
         return node
@@ -146,7 +147,6 @@ func reverse2(node: NodeList?) -> NodeList? {
     }
     return result
 }
-
 var nodelist2: NodeList? = NodeList(1)
 nodelist2?.append(2).append(3).append(4).append(5).append(6)
 printNode(nodelist2)
@@ -158,7 +158,46 @@ printNode(resu2)
 //print("\n==========")
 //let resu = reversef(node: nodelist2)
 //printNode(resu)
+//
+/*
+ 反转链表前 N 个节点
+ 例子，反转前3个节点
+ 1->2->3->4->5->6->nil
+ 3->2->1->4->5->6->nil
+ */
 
+func reversePreN(head:NodeList?, n:Int) -> NodeList? {
+    guard head != nil else { return head }
+    
+    return reverseN(head: head, n: n)
+}
+var result:NodeList? = nil
+func reverseN(head:NodeList?, n:Int) -> NodeList? {
+    if n == 1 {
+        result = head?.next
+        return head
+    }
+    let p = reverseN(head: head?.next, n: n - 1)
+    head?.next?.next = head
+    head?.next = result
+    return p
+}
+/*
+ 更进一步，给定一个索引去建[m,n]（索引从1开始）仅反转区间中的链表元素
+ */
+
+func reverseBetween(head: NodeList?, m:Int, n:Int) -> NodeList? {
+    guard m < n else { return head }
+    if m == 1 {
+        return reverseN(head: head, n: n)
+    }
+    head?.next = reverseBetween(head: head?.next, m: m - 1, n: n - 1)
+    return head
+}
+print("reverseBetween==========")
+var nodereB: NodeList? = NodeList(1)
+nodereB?.append(2).append(3).append(4).append(5).append(6)
+printNode(reverseBetween(head: nodereB, m: 2, n: 5))
 
 //题目：输入两个递增排序的链表，合并这两个链表并使新链表中的结点仍然是按照递增排序的。
 func mergeNodeList(lhs: NodeList, rhs: NodeList) -> NodeList {
