@@ -277,10 +277,15 @@ func isPalindrome(_ head: NodeList?) -> Bool {
         fast = fast?.next?.next
     }
     if fast == nil { slow = slow?.next }
-    let left = head
-    let right = reverse(node: slow)
-    while <#condition#> {
-        <#code#>
+    var left = head
+    var right = reverse(node: slow)
+    while right != nil {
+        if left?.value != right?.value {
+            return false
+        }
+        left = left?.next
+        right = right?.next
     }
-    
+    return true
 }
+
