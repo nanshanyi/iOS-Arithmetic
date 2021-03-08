@@ -64,9 +64,28 @@ func forceTraverseTree2(_ tree: BinaryTreeNode<String>?) {
         }
     }
 }
+func forceTraverseTree3(_ tree: BinaryTreeNode<String>?) {
+    var array = Array<BinaryTreeNode<String>>()
+    var pNode = tree;
+    while pNode != nil || !array.isEmpty {
+        if pNode != nil {
+            print("\(pNode!.value ?? "")")
+            if pNode?.right != nil {
+                array.append(pNode!.right!)
+            }
+            pNode = pNode?.left
+        } else {
+            pNode = array.popLast()
+        }
+    }
+}
+
+print("forceTraverseTree==========")
 forceTraverseTree(tree)
-print("\n")
+print("forceTraverseTree2==========")
 forceTraverseTree2(tree)
+print("forceTraverseTree3==========")
+forceTraverseTree3(tree)
 //2、中序
 func middleTraverseTree(_ tree: BinaryTreeNode<String>?) {
     guard tree != nil else {
@@ -272,3 +291,32 @@ func verifySquenceOfBST(sequence:[Int]) -> Bool {
 }
 
 let verRe = verifySquenceOfBST(sequence: [5,7,6,9,11,10,8])
+
+
+//给定一个不含重复元素的整数数组 nums 。一个以此数组直接递归构建的 最大二叉树 定义如下：
+//
+//二叉树的根是数组 nums 中的最大元素。
+//左子树是通过数组中 最大值左边部分 递归构造出的最大二叉树。
+//右子树是通过数组中 最大值右边部分 递归构造出的最大二叉树。
+//返回有给定数组 nums 构建的 最大二叉树 。
+
+
+func constructMaximumBinaryTree(_ nums: [Int]) -> BinaryTreeNode<Int>? {
+    if nums.isEmpty { return nil }
+    return helper(nums, 0, nums.count - 1 )
+}
+func helper(_ nums: [Int], _ left: Int, _ right:Int) -> BinaryTreeNode<Int>? {
+    if left > right { return nil }
+    var max = nums[left]
+    var maxIndex = left
+    for i in left...right {
+        if nums[i] > max {
+            max = nums[i]
+            maxIndex = i
+        }
+    }
+    let root = BinaryTreeNode(max)
+    root.left = helper(nums,left, maxIndex - 1)
+    root.right = helper(nums, maxIndex + 1, right)
+    return root
+}

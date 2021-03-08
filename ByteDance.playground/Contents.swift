@@ -133,25 +133,7 @@ func reverse( node: NodeList?) -> NodeList? {
     node?.next = nil
     return newHead
 }
-//非递归
-func reversef(node: NodeList?) -> NodeList? {
-    guard node != nil && node?.next != nil else {
-        return node
-    }
-    var pre: NodeList? = nil
-    var revHead: NodeList? = nil
-    var temp = node
-    while temp != nil {
-        let pNext = temp!.next
-        if pNext == nil {
-            revHead = temp
-        }
-        temp!.next = pre
-        pre = temp
-        temp = pNext
-    }
-    return revHead
-}
+
 //链表反转，非递归处理
 func reverse2(node: NodeList?) -> NodeList? {
     guard node != nil && node?.next != nil else {
@@ -175,53 +157,7 @@ print("==========")
 let resu2 = reverse2(node: nodelist2)
 printNode(resu2)
 
-//print("\n==========")
-//let resu = reversef(node: nodelist2)
-//printNode(resu)
-//
-/*
- 反转链表前 N 个节点
- 例子，反转前3个节点
- 1->2->3->4->5->6->nil
- 3->2->1->4->5->6->nil
- */
 
-func reversePreN(head:NodeList?, n:Int) -> NodeList? {
-    guard head != nil else { return head }
-    var array = [1,2,3,4]
-    array.count
-    for (i, value) in array.enumerated() {
-        <#code#>
-    }
-    return reverseN(head: head, n: n)
-}
-var result:NodeList? = nil
-func reverseN(head:NodeList?, n:Int) -> NodeList? {
-    if n == 1 {
-        result = head?.next
-        return head
-    }
-    let p = reverseN(head: head?.next, n: n - 1)
-    head?.next?.next = head
-    head?.next = result
-    return p
-}
-/*
- 更进一步，给定一个索引去建[m,n]（索引从1开始）仅反转区间中的链表元素
- */
-
-func reverseBetween(head: NodeList?, m:Int, n:Int) -> NodeList? {
-    guard m < n else { return head }
-    if m == 1 {
-        return reverseN(head: head, n: n)
-    }
-    head?.next = reverseBetween(head: head?.next, m: m - 1, n: n - 1)
-    return head
-}
-print("reverseBetween==========")
-var nodereB: NodeList? = NodeList(1)
-nodereB?.append(2).append(3).append(4).append(5).append(6)
-printNode(reverseBetween(head: nodereB, m: 2, n: 5))
 
 //题目：输入两个递增排序的链表，合并这两个链表并使新链表中的结点仍然是按照递增排序的。
 func mergeNodeList(lhs: NodeList, rhs: NodeList) -> NodeList {
@@ -283,37 +219,50 @@ nodelist4?.append(4).append(6).append(8)
 var result222 = mergeNodelist2(lhs: nodelist5, rhs: nodelist6)
 printNode(result222)
 
-/*
- 请判断一个链表是否为回文链表。
- 示例 1:
- 输入: 1->2 输出: false
- 
- 示例 2:
- 输入: 1->2->2->1 输出: true
- 进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
- */
-func isPalindrome(_ head: NodeList?) -> Bool {
-    guard head != nil else { return false }
-    guard head?.next != nil else { return true }
-    var slow = head
-    var fast = head
-    while fast != nil && fast?.next != nil {
-        slow = slow?.next
-        fast = fast?.next?.next
+//题目描述：一个链表，奇数位升序偶数位降序，让链表变成升序的。
+//比如：1 8 3 6 5 4 7 2 9，最后输出1 2 3 4 5 6 7 8 9。
+func sortNodeList(root: NodeList) -> NodeList? {
+    guard root.next != nil else {
+        return root
     }
-    if fast == nil { slow = slow?.next }
-    var left = head
-    var right = reverse(node: slow)
-    while right != nil {
-        if left?.value != right?.value {
-            return false
-        }
-        left = left?.next
-        right = right?.next
+//    let j: NodeList?
+//    let o: NodeList?
+//    let temp = root
+//    var index = 1
+//    while temp != nil {
+//        if index % 2 == 1 {
+//            if j == nil {
+//                j = temp
+//            } else {
+//                j?.next = temp
+//            }
+//        } else {
+//            if o = nil {
+//                o = temp
+//            } else {
+//                o?.next = temp
+//            }
+//        }
+//        index += 1
+//    }
+    let j = root
+    let o = root.next
+    var curj:NodeList? = j
+    var curo:NodeList? = o
+    var temp: NodeList? = root.next?.next
+    while temp != nil {
+        curj?.next = temp
+        curj = curj?.next
+        curo?.next = temp?.next
+        curo = curo?.next
+        temp = temp?.next?.next
     }
-    return true
+    curo?.next = nil
+    curj?.next = nil
+    guard let ro = reverse(node: o) else { return nil }
+    return mergeNodeList(lhs: j, rhs: ro)
+    
 }
-
 //LRU(Least Recently Used) 淘汰算法
 class LRUCache {
     private var cacheDic: Dictionary<Int, ListNode2> = Dictionary<Int, ListNode2>()
@@ -376,3 +325,4 @@ class LRUCache {
     }
     
 }
+
