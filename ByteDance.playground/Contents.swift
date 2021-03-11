@@ -225,26 +225,7 @@ func sortNodeList(root: NodeList) -> NodeList? {
     guard root.next != nil else {
         return root
     }
-//    let j: NodeList?
-//    let o: NodeList?
-//    let temp = root
-//    var index = 1
-//    while temp != nil {
-//        if index % 2 == 1 {
-//            if j == nil {
-//                j = temp
-//            } else {
-//                j?.next = temp
-//            }
-//        } else {
-//            if o = nil {
-//                o = temp
-//            } else {
-//                o?.next = temp
-//            }
-//        }
-//        index += 1
-//    }
+    
     let j = root
     let o = root.next
     var curj:NodeList? = j
@@ -261,8 +242,8 @@ func sortNodeList(root: NodeList) -> NodeList? {
     curj?.next = nil
     guard let ro = reverse(node: o) else { return nil }
     return mergeNodeList(lhs: j, rhs: ro)
-    
 }
+
 //LRU(Least Recently Used) 淘汰算法
 class LRUCache {
     private var cacheDic: Dictionary<Int, ListNode2> = Dictionary<Int, ListNode2>()
@@ -325,4 +306,47 @@ class LRUCache {
     }
     
 }
+/*
+ 动态规划之买卖股票的最佳时机
+ 假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+ 示例 1:
 
+ 输入: [7,1,5,3,6,4]
+ 输出: 5
+ 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+      注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+ 示例 2:
+
+ 输入: [7,6,4,3,1]
+ 输出: 0
+ 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+ */
+func maxProfit(_ prices: [Int]) -> Int {
+    guard prices.count >= 1 else {
+        return 0
+    }
+    var dp = [[Int]](repeating: [Int](repeating: 0, count: prices.count), count: 2)
+    for i in 0..<prices.count {
+        if i == 0 {
+            dp[i][0] = 0
+            dp[i][1] = -prices[0]
+            continue
+        }
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        dp[i][1] = max(dp[i-1][1], -prices[i])
+    }
+    return dp[prices.count-1][0]
+}
+//简化
+func maxProfit2(_ prices: [Int]) -> Int {
+    guard prices.count >= 1 else {
+        return 0
+    }
+    var dpi0 = 0
+    var dpi1 = Int.min
+    for i in 0..<prices.count {
+        dpi0 = max(dpi0, dpi1 + prices[i])
+        dpi1 = max(dpi1, -prices[i])
+    }
+    return dpi0
+}
